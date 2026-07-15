@@ -154,6 +154,11 @@
             android:exported="false"
             android:label="@string/recaptcha" />
 
+        <activity
+            android:name=".settings.YoutubeAccountLoginActivity"
+            android:exported="false"
+            android:label="@string/youtube_account_login_activity_title" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -454,3 +459,4 @@
             android:resource="@mipmap/ic_launcher" />
     </application>
 </manifest>
+
