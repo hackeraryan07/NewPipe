@@ -1,3 +1,4 @@
+SHA:f17783a228588250af84bfba9be9eea3355ff5c6
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -79,6 +80,20 @@
         android:key="@string/youtube_restricted_mode_enabled"
         android:summary="@string/youtube_restricted_mode_enabled_summary"
         android:title="@string/youtube_restricted_mode_enabled_title"
+        app:singleLineTitle="false"
+        app:iconSpaceReserved="false" />
+
+    <Preference
+        android:key="@string/youtube_account_login_key"
+        android:title="@string/youtube_account_login_title"
+        android:summary="@string/youtube_account_login_summary"
+        app:singleLineTitle="false"
+        app:iconSpaceReserved="false" />
+
+    <Preference
+        android:key="@string/youtube_account_logout_key"
+        android:title="@string/youtube_account_logout_title"
+        android:summary="@string/youtube_account_logout_summary"
         app:singleLineTitle="false"
         app:iconSpaceReserved="false" />
 
@@ -169,3 +184,4 @@
 
     </PreferenceCategory>
 </PreferenceScreen>
+
