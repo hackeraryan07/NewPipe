@@ -12,50 +12,23 @@
         android:gravity="center_vertical"
         android:minHeight="?attr/actionBarSize" />
 
-    <ScrollView
+    <FrameLayout
+        android:id="@+id/youtubeLoginWebViewContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <LinearLayout
+        <WebView
+            android:id="@+id/youtubeLoginWebView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_height="match_parent" />
 
-            <TextView
-                android:id="@+id/youtubeLoginInstructions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="@string/youtube_account_login_instructions"
-                android:textSize="15sp" />
+    </FrameLayout>
 
-            <Button
-                android:id="@+id/youtubeLoginOpenBrowserButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="@string/youtube_account_login_open_browser" />
-
-            <EditText
-                android:id="@+id/youtubeLoginCookieInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minLines="4"
-                android:gravity="top|start"
-                android:inputType="textMultiLine"
-                android:hint="@string/youtube_account_login_cookie_hint"
-                android:layout_marginBottom="16dp" />
-
-            <Button
-                android:id="@+id/youtubeLoginDoneButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/youtube_account_login_done" />
-
-        </LinearLayout>
-
-    </ScrollView>
+    <Button
+        android:id="@+id/youtubeLoginDoneButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/youtube_account_login_done" />
 
 </LinearLayout>
