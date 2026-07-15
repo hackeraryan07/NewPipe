@@ -1,3 +1,4 @@
+SHA:60ac20d0ac2c4a07dd2c6b91931aac8cb772c9e6
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" translatable="false">
     <!-- App versioning -->
@@ -1448,6 +1449,10 @@
 
     <string name="recaptcha_cookies_key">recaptcha_cookies_key</string>
 
+    <string name="youtube_account_cookie_key">youtube_account_cookie_key</string>
+    <string name="youtube_account_login_key">youtube_account_login_key</string>
+    <string name="youtube_account_logout_key">youtube_account_logout_key</string>
+
     <string name="enable_streams_notifications">enable_streams_notifications</string>
     <string name="streams_notifications_interval_key">streams_notifications_interval</string>
     <string name="streams_notifications_interval_default">14400</string>
@@ -1514,3 +1519,4 @@
         <item>@string/image_quality_high_key</item>
     </string-array>
 </resources>
+
