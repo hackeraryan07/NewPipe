@@ -171,10 +171,13 @@
     <string name="youtube_account_logout_title">Log out of YouTube account</string>
     <string name="youtube_account_logout_summary">Remove the saved YouTube login session</string>
     <string name="youtube_account_login_activity_title">Login to YouTube</string>
-    <string name="youtube_account_login_done">Save login and close</string>
-    <string name="youtube_account_login_not_detected">No YouTube login detected yet. Please finish signing in first.</string>
+    <string name="youtube_account_login_done">Save cookies</string>
+    <string name="youtube_account_login_not_detected">That doesn\'t look like a valid YouTube login cookie. Make sure you copied the whole Cookie value after signing in.</string>
     <string name="youtube_account_login_saved">YouTube login saved</string>
     <string name="youtube_account_logout_done">Logged out of YouTube account</string>
+    <string name="youtube_account_login_open_browser">Open browser to sign in to Google</string>
+    <string name="youtube_account_login_cookie_hint">Paste the Cookie value here</string>
+    <string name="youtube_account_login_instructions">Google blocks signing in from an in-app browser, so this has to be done in two steps:\n\n1. Tap the button below to open youtube.com in your regular browser and sign in.\n2. Once signed in, use your browser\'s developer tools (or a \"cookie export\" extension) to copy the Cookie header sent to youtube.com, then paste it below and tap \"Save cookies\".\n\nOn Chrome: open youtube.com, press the 3-dot menu → More tools → Developer tools → Network tab, reload the page, click any youtube.com request, and copy the value of the \"cookie\" request header.</string>
     <string name="restricted_video">This video is age restricted.\n\nTurn on \"%1$s\" in the settings if you want to see it.</string>
     <string name="restricted_video_no_stream">This video is age-restricted.
 \nDue to new YouTube policies with age-restricted videos, NewPipe cannot access any of its video streams and thus is unable to play it.</string>
