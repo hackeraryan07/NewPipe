@@ -82,6 +82,7 @@ configure<ApplicationExtension> {
                 applicationIdSuffix = suffix
                 resValue("string", "app_name", "NewPipe $suffix")
             }
+            signingConfig = signingConfigs.getByName("debug")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
@@ -349,3 +350,4 @@ aboutLibraries {
         )
     }
 }
+
