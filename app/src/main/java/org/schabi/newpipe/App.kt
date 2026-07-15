@@ -146,6 +146,9 @@ open class App :
         val key = getString(R.string.recaptcha_cookies_key)
         downloader.setCookie(ReCaptchaActivity.RECAPTCHA_COOKIES_KEY, prefs.getString(key, null))
         downloader.updateYoutubeRestrictedModeCookies(this)
+
+        val accountCookieKey = getString(R.string.youtube_account_cookie_key)
+        downloader.setYoutubeAccountCookie(prefs.getString(accountCookieKey, null))
     }
 
     private fun configureRxJavaErrorHandler() {
@@ -291,3 +294,4 @@ open class App :
             private set
     }
 }
+
