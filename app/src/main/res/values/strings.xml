@@ -1,3 +1,4 @@
+SHA:912ad3f3665c04d36d7a89324d6ee408407a6283
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="main_bg_subtitle">Tap the magnifying glass to get started.</string>
@@ -166,6 +167,15 @@
     <string name="show_age_restricted_content_summary">Show content possibly unsuitable for children because it has an age limit (like 18+)</string>
     <string name="youtube_restricted_mode_enabled_title">Turn on YouTube\'s \"Restricted Mode\"</string>
     <string name="youtube_restricted_mode_enabled_summary">YouTube provides a \"Restricted Mode\" which hides potentially mature content</string>
+    <string name="youtube_account_login_title">Login to YouTube</string>
+    <string name="youtube_account_login_summary">Sign in with your Google account so age-restricted videos that require a logged-in account can be played</string>
+    <string name="youtube_account_logout_title">Log out of YouTube account</string>
+    <string name="youtube_account_logout_summary">Remove the saved YouTube login session</string>
+    <string name="youtube_account_login_activity_title">Login to YouTube</string>
+    <string name="youtube_account_login_done">Save login and close</string>
+    <string name="youtube_account_login_not_detected">No YouTube login detected yet. Please finish signing in first.</string>
+    <string name="youtube_account_login_saved">YouTube login saved</string>
+    <string name="youtube_account_logout_done">Logged out of YouTube account</string>
     <string name="restricted_video">This video is age restricted.\n\nTurn on \"%1$s\" in the settings if you want to see it.</string>
     <string name="restricted_video_no_stream">This video is age-restricted.
 \nDue to new YouTube policies with age-restricted videos, NewPipe cannot access any of its video streams and thus is unable to play it.</string>
@@ -904,3 +914,4 @@
     <string name="api23_requirement_dialog_message">Unfortunately NewPipe depends on a few libraries that dropped support for Android 5.0 and 5.1. The next NewPipe release will therefore only work on devices with Android 6 or higher, sadly. Read more in the blogpost.</string>
     <string name="api23_requirement_dialog_blogpost">Blogpost</string>
 </resources>
+
