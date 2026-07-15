@@ -13,6 +13,9 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.os.LocaleListCompat;
 import androidx.preference.Preference;
 
+import android.content.Intent;
+import android.widget.Toast;
+
 import org.schabi.newpipe.DownloaderImpl;
 import org.schabi.newpipe.R;
 import org.schabi.newpipe.extractor.NewPipe;
@@ -27,10 +30,14 @@ import coil3.SingletonImageLoader;
 
 public class ContentSettingsFragment extends BasePreferenceFragment {
     private String youtubeRestrictedModeEnabledKey;
+    private String youtubeAccountLoginKey;
+    private String youtubeAccountLogoutKey;
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
         youtubeRestrictedModeEnabledKey = getString(R.string.youtube_restricted_mode_enabled);
+        youtubeAccountLoginKey = getString(R.string.youtube_account_login_key);
+        youtubeAccountLogoutKey = getString(R.string.youtube_account_logout_key);
 
         addPreferencesFromResourceRegistry();
 
@@ -93,6 +100,19 @@ public class ContentSettingsFragment extends BasePreferenceFragment {
             } else {
                 Log.w(TAG, "onPreferenceTreeClick: null context");
             }
+        } else if (preference.getKey().equals(youtubeAccountLoginKey)) {
+            startActivity(new Intent(getContext(), YoutubeAccountLoginActivity.class));
+        } else if (preference.getKey().equals(youtubeAccountLogoutKey)) {
+            DownloaderImpl.getInstance().setYoutubeAccountCookie(null);
+            final Context context = getContext();
+            if (context != null) {
+                androidx.preference.PreferenceManager.getDefaultSharedPreferences(context)
+                        .edit()
+                        .remove(getString(R.string.youtube_account_cookie_key))
+                        .apply();
+                Toast.makeText(context, R.string.youtube_account_logout_done, Toast.LENGTH_SHORT)
+                        .show();
+            }
         }
 
         return super.onPreferenceTreeClick(preference);
@@ -109,3 +129,4 @@ public class ContentSettingsFragment extends BasePreferenceFragment {
         PlayerHelper.resetFormat();
     }
 }
+
