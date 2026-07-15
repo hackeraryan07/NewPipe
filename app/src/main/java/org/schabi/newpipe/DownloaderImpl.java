@@ -1,3 +1,4 @@
+74a2cab51764e6f8b971861d607782476bcd5a1b
 package org.schabi.newpipe;
 
 import android.content.Context;
@@ -14,6 +15,9 @@ import org.schabi.newpipe.extractor.exceptions.ReCaptchaException;
 import org.schabi.newpipe.util.InfoCache;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +38,9 @@ public final class DownloaderImpl extends Downloader {
             "youtube_restricted_mode_key";
     public static final String YOUTUBE_RESTRICTED_MODE_COOKIE = "PREF=f2=8000000";
     public static final String YOUTUBE_DOMAIN = "youtube.com";
+    public static final String YOUTUBE_ACCOUNT_COOKIE_KEY =
+            "youtube_account_cookie_key";
+    private static final String YOUTUBE_ORIGIN = "https://www.youtube.com";
 
     private static DownloaderImpl instance;
     private final Map<String, String> mCookies;
@@ -72,13 +79,87 @@ public final class DownloaderImpl extends Downloader {
     public String getCookies(final String url) {
         final String youtubeCookie = url.contains(YOUTUBE_DOMAIN)
                 ? getCookie(YOUTUBE_RESTRICTED_MODE_COOKIE_KEY) : null;
+        final String youtubeAccountCookie = url.contains(YOUTUBE_DOMAIN)
+                ? getCookie(YOUTUBE_ACCOUNT_COOKIE_KEY) : null;
 
         // Recaptcha cookie is always added TODO: not sure if this is necessary
-        return Stream.of(youtubeCookie, getCookie(ReCaptchaActivity.RECAPTCHA_COOKIES_KEY))
+        return Stream.of(youtubeCookie, youtubeAccountCookie,
+                        getCookie(ReCaptchaActivity.RECAPTCHA_COOKIES_KEY))
                 .filter(Objects::nonNull)
                 .flatMap(cookies -> Arrays.stream(cookies.split("; *")))
                 .distinct()
                 .collect(Collectors.joining("; "));
+    }
+
+    /**
+     * Store the cookies obtained after logging into YouTube through a WebView, so that
+     * age-restricted videos that require a logged-in account can be extracted.
+     *
+     * @param cookies the raw "name=value; name2=value2" cookie string captured from the WebView
+     */
+    public void setYoutubeAccountCookie(@Nullable final String cookies) {
+        if (cookies == null || cookies.isEmpty()) {
+            removeCookie(YOUTUBE_ACCOUNT_COOKIE_KEY);
+        } else {
+            setCookie(YOUTUBE_ACCOUNT_COOKIE_KEY, cookies);
+        }
+        InfoCache.getInstance().clearCache();
+    }
+
+    public String getYoutubeAccountCookie() {
+        return getCookie(YOUTUBE_ACCOUNT_COOKIE_KEY);
+    }
+
+    public boolean isYoutubeAccountLoggedIn() {
+        final String cookie = getYoutubeAccountCookie();
+        return cookie != null
+                && (cookie.contains("SAPISID=") || cookie.contains("__Secure-3PAPISID="));
+    }
+
+    /**
+     * Build the {@code Authorization: SAPISIDHASH ...} header YouTube requires on requests
+     * made with a logged-in account's cookies, using the well-documented SAPISID hash scheme
+     * (see https://stackoverflow.com/a/32065323). Returns {@code null} when no account is
+     * logged in.
+     */
+    @Nullable
+    private static String generateSapisidHashHeader(final String cookieHeader) {
+        String sapisid = extractCookieValue(cookieHeader, "SAPISID");
+        if (sapisid == null) {
+            sapisid = extractCookieValue(cookieHeader, "__Secure-3PAPISID");
+        }
+        if (sapisid == null) {
+            return null;
+        }
+
+        final long timestampSeconds = System.currentTimeMillis() / 1000L;
+        final String input = timestampSeconds + " " + sapisid + " " + YOUTUBE_ORIGIN;
+
+        try {
+            final MessageDigest digest = MessageDigest.getInstance("SHA-1");
+            final byte[] hashBytes = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+            final StringBuilder hexHash = new StringBuilder();
+            for (final byte b : hashBytes) {
+                hexHash.append(String.format("%02x", b));
+            }
+            return "SAPISIDHASH " + timestampSeconds + "_" + hexHash;
+        } catch (final NoSuchAlgorithmException e) {
+            return null;
+        }
+    }
+
+    @Nullable
+    private static String extractCookieValue(final String cookieHeader, final String name) {
+        if (cookieHeader == null) {
+            return null;
+        }
+        for (final String part : cookieHeader.split("; *")) {
+            final int eq = part.indexOf('=');
+            if (eq > 0 && part.substring(0, eq).trim().equals(name)) {
+                return part.substring(eq + 1).trim();
+            }
+        }
+        return null;
     }
 
     public String getCookie(final String key) {
@@ -151,6 +232,15 @@ public final class DownloaderImpl extends Downloader {
             requestBuilder.addHeader("Cookie", cookies);
         }
 
+        if (url.contains(YOUTUBE_DOMAIN) && isYoutubeAccountLoggedIn()) {
+            final String sapisidHashHeader = generateSapisidHashHeader(cookies);
+            if (sapisidHashHeader != null) {
+                requestBuilder.addHeader("Authorization", sapisidHashHeader);
+                requestBuilder.addHeader("X-Origin", YOUTUBE_ORIGIN);
+                requestBuilder.addHeader("X-Goog-AuthUser", "0");
+            }
+        }
+
         headers.forEach((headerName, headerValueList) -> {
             requestBuilder.removeHeader(headerName);
             headerValueList.forEach(headerValue ->
@@ -179,3 +269,4 @@ public final class DownloaderImpl extends Downloader {
         }
     }
 }
+
